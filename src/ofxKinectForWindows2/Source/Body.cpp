@@ -95,7 +95,16 @@ namespace ofxKinectForWindows2 {
 				}
 
 				IBody* ppBodies[BODY_COUNT] = {0};
-				if (FAILED(frame->GetAndRefreshBodyData(_countof(ppBodies), ppBodies))) {
+				bodies_available_for_face = frame->GetAndRefreshBodyData(_countof(ppBodies), ppBodies);
+				if (useFaceTracker)
+				{
+					for (int i = 0; i < BODY_COUNT; i++)
+					{
+						ppBodies_hold[i] = ppBodies[i];
+					}
+				}
+
+				if (FAILED(bodies_available_for_face)) {
 					throw Exception("Failed to refresh body data");
 				}
 
@@ -159,9 +168,11 @@ namespace ofxKinectForWindows2 {
 					}
 				}
 
-				for (int i = 0; i < _countof(ppBodies); ++i)
-				{
-					SafeRelease(ppBodies[i]);
+				if (!useFaceTracker) {
+					for (int i = 0; i < _countof(ppBodies); ++i)
+					{
+						SafeRelease(ppBodies[i]);
+					}
 				}
 			} catch (std::exception & e) {
 				OFXKINECTFORWINDOWS2_ERROR << e.what();

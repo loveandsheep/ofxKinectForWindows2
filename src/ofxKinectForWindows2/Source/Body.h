@@ -35,6 +35,10 @@ namespace ofxKinectForWindows2 {
 
 			static void drawProjectedBone(map<JointType, Data::Joint> & pJoints, map<JointType, ofVec2f> & pJointPoints, JointType joint0, JointType joint1);
 			static void drawProjectedHand(HandState handState, ofVec2f & handPos);
+
+			static const BOOLEAN useFaceTracker = true;
+			IBody* ppBodies_hold[BODY_COUNT];
+			HRESULT bodies_available_for_face = E_FAIL;
 		protected:
 			void initReader(IKinectSensor *) override;
 
